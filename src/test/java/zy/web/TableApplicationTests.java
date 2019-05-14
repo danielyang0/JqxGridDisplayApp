@@ -14,9 +14,6 @@ public class TableApplicationTests {
 	public void init() {
 		System.out.println("tests start-------");
 	}
-	@Test
-	public void contextLoads() {
-	}
 	
 	@After
 	public void after() {
