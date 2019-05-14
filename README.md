@@ -5,7 +5,7 @@
 ### Mysql In Docker 
 create a contaner with mysql server running on port 3307
 ```console
-docker run -p 3307:3306 --name titanic -e MYSQL_ROOT_PASSWORD=pass -d mysql:8.0 mysqld --default-authentication-plugin=mysql_native_password;}
+docker run -p 3307:3306 --name titanic -e MYSQL_ROOT_PASSWORD=pass -d mysql:8.0 mysqld --default-authentication-plugin=mysql_native_password;
 ```
 create a database called test manually in this mysql server
 
