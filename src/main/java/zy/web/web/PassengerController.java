@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import zy.web.entity.Passenger;
 import zy.web.service.PassengerService;
+import zy.web.util.PassengerUtil;
 
 
 @RestController
@@ -102,7 +103,8 @@ public class PassengerController {
 //        File dest = new File(filePath + fileName);
         try {
 //            file.transferTo(dest);
-            List<Passenger> passengers = parse(file);
+        	BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()));
+            List<Passenger> passengers = PassengerUtil.parse(br);
             LOGGER.debug(passengers.size());
             passengerService.addPassengers(passengers);
             return passengerService.getPassengers();
@@ -111,52 +113,7 @@ public class PassengerController {
         }
         return null;
     }
+	
 
-    /**
-     * parse the uploaded file to get a list of passenger objects.
-     * @param dest
-     * @return
-     * @throws IOException
-     */
-	private List<Passenger> parse(MultipartFile file) throws IOException {
-		boolean isFirstLine = true;
-		List<Passenger> passengers = new ArrayList<>();
-//		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
-		    String line;
-		    while ((line = br.readLine()) != null) {
-		    	if (isFirstLine) {
-		    		isFirstLine = false;
-		    		continue;
-		    	}
-		        String[] splited = line.split("\"");
-		        String[] firstPart = splited[0].split(",");
-		        String name = splited[1];
-		        String[] lastPart = splited[2].split(",");
-		        if (firstPart.length < 3 || lastPart.length < 9) {
-		        	continue;
-		        }
-		        Passenger psg = new Passenger();
-		        try {
-		        	psg.setPassengerId(Integer.valueOf(firstPart[0]));
-		        } catch (NumberFormatException e) {
-		        	LOGGER.error("skip one line");
-		        	continue;
-		        }
-		        psg.setSurvived(firstPart[1]);
-		        psg.setPclass(firstPart[2]);
-		        psg.setName(name);
-		        psg.setSex(lastPart[1]);
-		        psg.setAge(lastPart[2]);
-		        psg.setSibSp(lastPart[3]);
-		        psg.setParch(lastPart[4]);
-		        psg.setTicket(lastPart[5]);
-		        psg.setFare(lastPart[6]);
-		        psg.setCabin(lastPart[7]);
-		        psg.setEmbarked(lastPart[8]);
-		        passengers.add(psg);
-		    }
-		}
-		return passengers;
-	}
+	
 }
