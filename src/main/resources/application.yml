@@ -1,0 +1,24 @@
+server:
+   port: 3000
+management:
+   port: 9090
+spring:
+    datasource:
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3307/test?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+        username: root
+        password: pass
+    jpa:
+        database: MYSQL
+        show-sql: true
+        hibernate:
+            naming:
+                physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+            ddl-auto: update
+    mvc:
+        view:
+            prefix: /WEB-INF/views/
+            suffix: .jsp
+    servlet:
+        multipart:
+            max-file-size: 50MB
